@@ -371,11 +371,11 @@ public final class Sinks {
 		 *     have demand.</li>
 		 * </ul>
 		 * <p>
+		 * <img class="marble" src="doc-files/marbles/sinkDirectAllOrNothing.svg" alt="">
 		 *
 		 * @param <T> the type of elements to emit
 		 * @return a multicast {@link Sinks.Many} that "drops" in case any subscriber is too slow
 		 */
-		//TODO marble <img class="marble" src="doc-files/marbles/sinkWarmup.svg" alt="">
 		<T> Sinks.Many<T> directAllOrNothing();
 
 		/**
@@ -392,11 +392,11 @@ public final class Sinks {
 		 *     have been pushed to the sink AFTER this subscriber was subscribed.</li>
 		 * </ul>
 		 * <p>
+		 * <img class="marble" src="doc-files/marbles/sinkDirectBestEffort.svg" alt="">
 		 *
 		 * @param <T> the type of elements to emit
 		 * @return a multicast {@link Sinks.Many} that "drops" in case any subscriber is too slow
 		 */
-		//TODO marble <img class="marble" src="doc-files/marbles/sinkWarmup.svg" alt="">
 		<T> Sinks.Many<T> directBestEffort();
 	}
 
