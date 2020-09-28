@@ -26,7 +26,7 @@ import org.reactivestreams.Subscription;
 
 import static org.openjdk.jcstress.annotations.Expect.*;
 
-public abstract class SinkManyBestEffortStressTest {
+public class SinkManyBestEffortStressTest {
 
 	@JCStressTest
 	@Outcome(id = {"6"}, expect = ACCEPTABLE, desc = "Six parallel subscribes")
@@ -72,32 +72,9 @@ public abstract class SinkManyBestEffortStressTest {
 	}
 
 	@JCStressTest
-	@Outcome(id = {"0"}, expect = ACCEPTABLE, desc = "No subscriber counted")
-	@State
-	public static class CancelOnSubscribeOneSubscribersStressTest {
-
-		final SinkManyBestEffort<Integer> sink = SinkManyBestEffort.createBestEffort();
-
-		@Actor
-		public void one() {
-			sink.subscribe(new BaseSubscriber<Integer>() {
-				@Override
-				protected void hookOnSubscribe(Subscription subscription) {
-					subscription.cancel();
-				}
-			});
-		}
-
-		@Arbiter
-		public void arbiter(I_Result r) {
-			r.r1 = sink.currentSubscriberCount();
-		}
-	}
-
-	@JCStressTest
 	@Outcome(id = {"1"}, expect = ACCEPTABLE, desc = "One subscriber counted")
 	@State
-	public static class CancelOnSubscribeTwoSubscribersStressTest {
+	public static class ImmediatelyCancelledSubscriberAndNewSubscriberStressTest {
 
 		final SinkManyBestEffort<Integer> sink = SinkManyBestEffort.createBestEffort();
 
@@ -125,7 +102,7 @@ public abstract class SinkManyBestEffortStressTest {
 	@JCStressTest
 	@Outcome(id = {"0"}, expect = ACCEPTABLE, desc = "No subscriber counted")
 	@State
-	public static class CancelledBeforeSubscribeOneSubscriberStressTest {
+	public static class CancelledVsSubscribeOneSubscriberStressTest {
 
 		final SinkManyBestEffort<Integer> sink = SinkManyBestEffort.createBestEffort();
 		final StressSubscriber<Integer> sub = new StressSubscriber<>(0);
@@ -149,7 +126,7 @@ public abstract class SinkManyBestEffortStressTest {
 	@JCStressTest
 	@Outcome(id = {"1"}, expect = ACCEPTABLE, desc = "One subscriber counted")
 	@State
-	public static class CancelledBeforeSubscribeTwoSubscribersStressTest {
+	public static class CancelledVsSubscribeTwoSubscribersStressTest {
 
 		final SinkManyBestEffort<Integer> sink = SinkManyBestEffort.createBestEffort();
 		final StressSubscriber<Integer> sub2 = new StressSubscriber<>(0);
@@ -182,13 +159,11 @@ public abstract class SinkManyBestEffortStressTest {
 	@State
 	public static class InnerTryEmitNextCancelVersusRequestStressTest {
 
-		final SinkManyBestEffort<Integer>             sink;
-		final StressSubscriber<Integer>               subscriber;
+		final SinkManyBestEffort<Integer>             sink       = SinkManyBestEffort.createBestEffort();
+		final StressSubscriber<Integer>               subscriber = new StressSubscriber<>(0);
 		final SinkManyBestEffort.DirectInner<Integer> inner;
 
 		{
-			sink = SinkManyBestEffort.createBestEffort();
-			subscriber = new StressSubscriber<>(0);
 			sink.subscribe(subscriber);
 			inner = sink.subscribers[0];
 		}

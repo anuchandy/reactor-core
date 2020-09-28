@@ -50,9 +50,20 @@ public class StressSubscriber<T> extends BaseSubscriber<T> {
 
 	public final AtomicInteger onSubscribeCalls = new AtomicInteger();
 
+	/**
+	 * Build a {@link StressSubscriber} that makes an unbounded request upon subscription.
+	 */
 	public StressSubscriber() {
 		this(Long.MAX_VALUE);
 	}
+
+	/**
+	 * Build a {@link StressSubscriber} that requests the provided amount in
+	 * {@link #onSubscribe(Subscription)}. Use {@code 0} to avoid any initial request
+	 * upon subscription.
+	 *
+	 * @param initRequest the requested amount upon subscription, or zero to disable initial request
+	 */
 	public StressSubscriber(long initRequest) {
 		this.initRequest = initRequest;
 	}
