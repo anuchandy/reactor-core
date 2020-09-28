@@ -395,7 +395,7 @@ public final class Sinks {
 		 * <img class="marble" src="doc-files/marbles/sinkDirectBestEffort.svg" alt="">
 		 *
 		 * @param <T> the type of elements to emit
-		 * @return a multicast {@link Sinks.Many} that "drops" in case any subscriber is too slow
+		 * @return a multicast {@link Sinks.Many} that "drops" in case of no demand from any subscriber
 		 */
 		<T> Sinks.Many<T> directBestEffort();
 	}
